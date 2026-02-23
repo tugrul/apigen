@@ -1,0 +1,49 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+/**
+ * Tugrul ApiGen — CLI entrypoint
+ *
+ * Installed via composer as: vendor/bin/apigen
+ */
+
+// ---------------------------------------------------------------
+// Autoloader discovery — works whether installed as a dependency
+// or run from the package root during development.
+// ---------------------------------------------------------------
+
+$autoloadPaths = [
+    // When installed as a Composer dependency
+    __DIR__ . '/../../../autoload.php',
+    // When running from the package root (development)
+    __DIR__ . '/../vendor/autoload.php',
+];
+
+$autoloaderFound = false;
+
+foreach ($autoloadPaths as $path) {
+    if (file_exists($path)) {
+        require_once $path;
+        $autoloaderFound = true;
+        break;
+    }
+}
+
+if (!$autoloaderFound) {
+    fwrite(STDERR, "ERROR: Composer autoloader not found.\n");
+    fwrite(STDERR, "Run 'composer install' first.\n");
+    exit(1);
+}
+
+// ---------------------------------------------------------------
+// Bootstrap and dispatch
+// ---------------------------------------------------------------
+
+use Tugrul\ApiGen\Console\Application;
+
+$app      = new Application();
+$exitCode = $app->run($argv);
+
+exit($exitCode);

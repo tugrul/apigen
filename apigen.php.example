@@ -1,0 +1,91 @@
+<?php
+
+/**
+ * apigen.php — Example configuration file for Tugrul ApiGen CLI
+ *
+ * Pass this to the CLI with:
+ *   apigen generate --config=apigen.php
+ *
+ * All keys are optional — the defaults are shown in the comments.
+ */
+
+use Tugrul\ApiGen\Generator\SubNamespaceNamingStrategy;
+use Tugrul\ApiGen\Generator\SuffixNamingStrategy;
+use Tugrul\ApiGen\Generator\MappedNamingStrategy;
+use Tugrul\ApiGen\Generator\DefaultNamingStrategy;
+
+return [
+    // ---------------------------------------------------------------
+    // Bootstrap — usually your Composer autoloader.
+    // Loaded before any interface class is resolved.
+    // ---------------------------------------------------------------
+    'bootstrap' => __DIR__ . '/vendor/autoload.php',
+
+    // ---------------------------------------------------------------
+    // Interface classes to generate stubs for.
+    // Must be resolvable after 'bootstrap' is loaded.
+    // ---------------------------------------------------------------
+    'interfaces' => [
+        \MyApp\Api\UserApi::class,
+        \MyApp\Api\ProductApi::class,
+        \MyApp\Api\OrderApi::class,
+    ],
+
+    // ---------------------------------------------------------------
+    // Output directory — where generated files are written.
+    // Sub-directories are created automatically based on namespace.
+    // ---------------------------------------------------------------
+    'output_dir' => __DIR__ . '/src/Generated',
+
+    // ---------------------------------------------------------------
+    // Naming strategy — controls class name + namespace of generated
+    // stubs. Use one of:
+    //
+    //   new DefaultNamingStrategy()
+    //     Same name as interface; auto-appends "Impl" on file conflict.
+    //     Example: MyApp\Api\UserApi → MyApp\Api\UserApi
+    //
+    //   new SuffixNamingStrategy('Stub')
+    //     Appends a fixed suffix. Optional second arg overrides namespace.
+    //     Example: MyApp\Api\UserApi → MyApp\Api\UserApiStub
+    //
+    //   new SubNamespaceNamingStrategy('Generated')
+    //     Inserts a child namespace segment. Optional second arg = suffix.
+    //     Example: MyApp\Api\UserApi → MyApp\Api\Generated\UserApi
+    //
+    //   new SubNamespaceNamingStrategy('Generated', 'Stub')
+    //     Example: MyApp\Api\UserApi → MyApp\Api\Generated\UserApiStub
+    //
+    //   new MappedNamingStrategy([
+    //       UserApi::class => ['MyApp\Clients', 'UserClient'],
+    //   ], fallback: new DefaultNamingStrategy())
+    //     Per-interface explicit mapping with a fallback for unmapped ones.
+    //
+    //   new CallableNamingStrategy(fn($iface, $dir) => [$ns, $class])
+    //     Total control via a callable.
+    // ---------------------------------------------------------------
+    'naming' => new SubNamespaceNamingStrategy('Generated'),
+
+    // ---------------------------------------------------------------
+    // (Optional) Uncomment to always overwrite existing files.
+    // Without this, the generator skips files that are not
+    // marked as auto-generated.
+    // ---------------------------------------------------------------
+    // 'force' => true,
+
+    // ---------------------------------------------------------------
+    // Output path resolver — controls how namespace maps to filesystem.
+    //
+    // By default, ApiGen auto-discovers your composer.json by walking
+    // up the directory tree and reads the actual psr-4 autoload map to
+    // determine the correct sub-directory offset. You only need to set
+    // these if auto-discovery fails or you want explicit control.
+    //
+    // 'composer_json' — explicit path to composer.json
+    // 'path_fallback_mode' — what to do when PSR-4 root cannot be found:
+    //     'flat'           → put the file directly in output_dir (default)
+    //     'full_namespace' → use full namespace as sub-path (old naive behaviour)
+    // ---------------------------------------------------------------
+    // 'composer_json'      => __DIR__ . '/composer.json',
+    // 'path_fallback_mode' => 'flat',
+];
