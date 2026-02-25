@@ -9,11 +9,9 @@ Create a PHP interface and annotate each method. Every method needs one HTTP ver
 ```php
 <?php
 
-use Tugrul\ApiGen\Attributes\{
-    GET, POST, PUT, DELETE,
-    Path, Query, Body, Returns,
-    StaticHeader, NoAuth,
-};
+use Tugrul\ApiGen\Attributes\Method\{GET, POST, PUT, DELETE};
+use Tugrul\ApiGen\Attributes\Params\{Path, Query, Body};
+use Tugrul\ApiGen\Attributes\Modifiers\{Returns, StaticHeader, NoAuth};
 
 #[StaticHeader('Accept', 'application/json')]
 interface PetStoreApi
