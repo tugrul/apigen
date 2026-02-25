@@ -92,6 +92,8 @@ final class StubGenerator
 
         [$stubNamespace, $stubClass] = $this->naming->resolve($rc, $this->outputDir);
 
+        $stubClass = self::omitSuffix($stubClass, 'Interface');
+
         // Conflict check for DefaultNamingStrategy:
         // If the resolved output path already holds a non-generated file,
         // append 'Impl' to the class name to avoid overwriting hand-written code.
@@ -117,6 +119,27 @@ final class StubGenerator
             stubNamespace:  $stubNamespace,
             filePath:       $filePath,
         );
+    }
+
+    /**
+     * @param string $stubClass
+     * @param string $suffix
+     * @return string
+     */
+    public static function omitSuffix(string $stubClass, string $suffix): string
+    {
+        $length = strlen($suffix);
+
+        // Only remove the suffix if:
+        // 1. The class name actually ends with the suffix, and
+        // 2. Removing it would not result in an empty string.
+        // If the class name is shorter than or equal to the suffix length,
+        // we return it unchanged to avoid producing an empty string.
+        if (strlen($stubClass) <= $length || !str_ends_with($stubClass, $suffix)) {
+            return $stubClass;
+        }
+
+        return substr($stubClass, 0, -$length);
     }
 
     /**

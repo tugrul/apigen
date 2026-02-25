@@ -7,7 +7,7 @@ namespace Tugrul\ApiGen\Tests\Generator;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use Tugrul\ApiGen\Generator\{CallableNamingStrategy, DefaultNamingStrategy, MappedNamingStrategy,
-    SubNamespaceNamingStrategy, SuffixNamingStrategy};
+    SubNamespaceNamingStrategy, SuffixNamingStrategy, StubGenerator};
 use Tugrul\ApiGen\Tests\Fixtures\{PetApi, SimpleApi};
 
 final class StubNamingStrategyTest extends TestCase
@@ -206,5 +206,14 @@ final class StubNamingStrategyTest extends TestCase
 
         self::assertSame('ClassA', $clsA);
         self::assertSame('ClassB', $clsB);
+    }
+
+    public function test_omit_suffix(): void
+    {
+        $this->assertSame('Api', StubGenerator::omitSuffix('ApiInterface', 'Interface'));
+
+        $this->assertSame('Api', StubGenerator::omitSuffix('Api', 'Interface'));
+
+        $this->assertSame('Interface', StubGenerator::omitSuffix('Interface', 'Interface'));
     }
 }
