@@ -1,6 +1,5 @@
 {
     "name": "tugrul/apigen",
-    "version": "1.0.0",
     "description": "Generate REST API SDK libraries from annotated PHP interfaces. PSR-18 based, attribute-driven.",
     "type": "library",
     "license": "MIT",
