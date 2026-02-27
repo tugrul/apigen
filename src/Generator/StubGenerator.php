@@ -13,6 +13,8 @@ use Tugrul\ApiGen\Attributes\Params\{Path, Query, QueryMap, Header, Body, Field,
 use Tugrul\ApiGen\Attributes\Modifiers\{Headers, StaticHeader, StaticQuery, FormUrlEncoded, Multipart};
 use Tugrul\ApiGen\Attributes\Modifiers\{Returns, NoAuth, UseAuth, BaseUrl, ApiNamespace};
 
+use Tugrul\ApiGen\Util\PhpExporter;
+
 /**
  * Generates concrete PHP implementation classes from annotated interfaces.
  *
@@ -384,10 +386,13 @@ final class StubGenerator
             }
 
             $default = '';
-            if ($p->isOptional() && $p->isDefaultValueAvailable()) {
-                $default = ' = ' . var_export($p->getDefaultValue(), true);
-            } elseif ($p->allowsNull() && !$p->isOptional()) {
-                $default = ' = null';
+
+            if ($p->isOptional()) {
+                if ($p->isDefaultValueAvailable()) {
+                    $default = ' = ' . PhpExporter::export($p->getDefaultValue());
+                } elseif ($p->allowsNull()) {
+                    $default = ' = null';
+                }
             }
 
             return "{$type}\${$p->getName()}{$default}";

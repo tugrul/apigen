@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tugrul\ApiGen\Tests\Fixtures;
+namespace Tugrul\ApiGen\Tests\Fixtures\Api;
 
 // ---------------------------------------------------------------------------
 // Full-featured interface covering every attribute
@@ -90,7 +90,7 @@ interface PetApi
     ): array;
 
     #[GET('/pets/admin')]
-    #[UseAuth('Tugrul\ApiGen\Tests\Fixtures\FakeAdminAuth')]
+    #[UseAuth('Tugrul\ApiGen\Tests\Fixtures\Auth\FakeAdminAuth')]
     #[Returns('array')]
     public function adminList(): array;
 }

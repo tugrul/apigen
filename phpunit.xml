@@ -14,6 +14,7 @@
             <directory>tests/Generator</directory>
             <directory>tests/Http</directory>
             <directory>tests/Proxy</directory>
+            <directory>tests/Util</directory>
         </testsuite>
     </testsuites>
 

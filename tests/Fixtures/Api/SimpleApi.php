@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tugrul\ApiGen\Tests\Fixtures;
+namespace Tugrul\ApiGen\Tests\Fixtures\Api;
 
 use Tugrul\ApiGen\Attributes\Method\{GET, DELETE};
 use Tugrul\ApiGen\Attributes\Params\Path;

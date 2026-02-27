@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tugrul\ApiGen\Tests\Fixtures;
+namespace Tugrul\ApiGen\Tests\Fixtures\Auth;
 
 // ---------------------------------------------------------------------------
 // Fake auth class referenced by #[UseAuth] above

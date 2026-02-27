@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use Tugrul\ApiGen\Generator\{CallableNamingStrategy, DefaultNamingStrategy, MappedNamingStrategy,
     SubNamespaceNamingStrategy, SuffixNamingStrategy, StubGenerator};
-use Tugrul\ApiGen\Tests\Fixtures\{PetApi, SimpleApi};
+use Tugrul\ApiGen\Tests\Fixtures\Api\{PetApi, SimpleApi};
 
 final class StubNamingStrategyTest extends TestCase
 {
@@ -41,7 +41,7 @@ final class StubNamingStrategyTest extends TestCase
     {
         [$ns] = (new DefaultNamingStrategy())->resolve($this->rc(SimpleApi::class), $this->tmpDir);
 
-        self::assertSame('Tugrul\\ApiGen\\Tests\\Fixtures', $ns);
+        self::assertSame('Tugrul\\ApiGen\\Tests\\Fixtures\\Api', $ns);
     }
 
     public function test_default_returns_same_short_name_as_interface(): void
@@ -55,7 +55,7 @@ final class StubNamingStrategyTest extends TestCase
     {
         [$ns, $cls] = (new DefaultNamingStrategy())->resolve($this->rc(PetApi::class), $this->tmpDir);
 
-        self::assertSame('Tugrul\\ApiGen\\Tests\\Fixtures', $ns);
+        self::assertSame('Tugrul\\ApiGen\\Tests\\Fixtures\\Api', $ns);
         self::assertSame('PetApi', $cls);
     }
 
@@ -83,7 +83,7 @@ final class StubNamingStrategyTest extends TestCase
     {
         [$ns] = (new SuffixNamingStrategy('Stub'))->resolve($this->rc(PetApi::class), $this->tmpDir);
 
-        self::assertSame('Tugrul\\ApiGen\\Tests\\Fixtures', $ns);
+        self::assertSame('Tugrul\\ApiGen\\Tests\\Fixtures\\Api', $ns);
     }
 
     public function test_suffix_with_namespace_override(): void
@@ -107,7 +107,7 @@ final class StubNamingStrategyTest extends TestCase
     {
         [$ns] = (new SubNamespaceNamingStrategy('Generated'))->resolve($this->rc(SimpleApi::class), $this->tmpDir);
 
-        self::assertSame('Tugrul\\ApiGen\\Tests\\Fixtures\\Generated', $ns);
+        self::assertSame('Tugrul\\ApiGen\\Tests\\Fixtures\\Api\\Generated', $ns);
     }
 
     public function test_sub_namespace_preserves_class_name(): void
@@ -121,7 +121,7 @@ final class StubNamingStrategyTest extends TestCase
     {
         [$ns, $cls] = (new SubNamespaceNamingStrategy('Generated', 'Impl'))->resolve($this->rc(SimpleApi::class), $this->tmpDir);
 
-        self::assertSame('Tugrul\\ApiGen\\Tests\\Fixtures\\Generated', $ns);
+        self::assertSame('Tugrul\\ApiGen\\Tests\\Fixtures\\Api\\Generated', $ns);
         self::assertSame('SimpleApiImpl', $cls);
     }
 

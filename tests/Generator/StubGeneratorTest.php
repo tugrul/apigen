@@ -6,7 +6,7 @@ namespace Tugrul\ApiGen\Tests\Generator;
 
 use PHPUnit\Framework\TestCase;
 use Tugrul\ApiGen\Generator\{DefaultNamingStrategy, StubGenerator, SubNamespaceNamingStrategy, SuffixNamingStrategy};
-use Tugrul\ApiGen\Tests\Fixtures\{PetApi, SimpleApi};
+use Tugrul\ApiGen\Tests\Fixtures\Api\{PetApi, SimpleApi};
 
 final class StubGeneratorTest extends TestCase
 {
@@ -311,7 +311,7 @@ final class StubGeneratorTest extends TestCase
             $this->outputDir,
             \Tugrul\ApiGen\Generator\OutputPathResolver::FALLBACK_FULL_NAMESPACE,
         );
-        $expectedPath = $resolver->resolve($rc, 'Tugrul\\ApiGen\\Tests\\Fixtures', 'SimpleApi');
+        $expectedPath = $resolver->resolve($rc, 'Tugrul\\ApiGen\\Tests\\Fixtures\\Api', 'SimpleApi');
 
         @mkdir(dirname($expectedPath), 0755, true);
         file_put_contents($expectedPath, '<?php // hand-written, not generated');
