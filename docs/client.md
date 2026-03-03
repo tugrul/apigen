@@ -15,24 +15,26 @@ $client = ClientBuilder::create('https://api.example.com')
 
 ### Method Reference
 
-| Method | Description |
-|---|---|
-| `::create(string $baseUrl)` | Static factory. Base URL trailing slash is stripped automatically. |
-| `->withPsr18($client, $reqFact, $streamFact, $uriFact)` | Set all PSR-18/17 dependencies at once. |
-| `->withHttpClient(ClientInterface $client)` | Set just the PSR-18 HTTP client. |
-| `->withRequestFactory(RequestFactoryInterface $f)` | Set just the PSR-17 request factory. |
-| `->withStreamFactory(StreamFactoryInterface $f)` | Set just the PSR-17 stream factory. |
-| `->withUriFactory(UriFactoryInterface $f)` | Set just the PSR-17 URI factory. |
-| `->withBearerToken(string $token)` | Use `BearerTokenAuth` as the default strategy. |
-| `->withApiKey($key, $header, $location)` | Use `ApiKeyAuth`. Location: `LOCATION_HEADER` *(default)* or `LOCATION_QUERY`. |
-| `->withBasicAuth($user, $pass)` | Use `BasicAuth`. |
-| `->withStaticToken($token, $header, $prefix)` | Use `StaticTokenAuth`. |
-| `->withHmacSignature($secret, $algo, $header)` | Use `HmacSignatureAuth`. |
-| `->withOAuth2ClientCredentials(...)` | Use `OAuth2ClientCredentialsAuth`. See [Authentication](authentication.md). |
-| `->withAuth(AuthStrategy $auth)` | Set any custom `AuthStrategy` as the default. |
-| `->withNamedStrategy($key, AuthStrategy $strategy)` | Register a named strategy for `#[UseAuth]` resolution. |
-| `->withDecoder(ResponseDecoder $decoder)` | Set a custom response decoder. |
-| `->build()` | Construct and return the `DefaultSdkClient`. Throws `\LogicException` if required PSR dependencies are missing. |
+| Method                                                  | Description                                                                                                     |
+|---------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------|
+| `::create(string $baseUrl)`                             | Static factory. Base URL trailing slash is stripped automatically.                                              |
+| `->withPsr18($client, $reqFact, $streamFact, $uriFact)` | Set all PSR-18/17 dependencies at once.                                                                         |
+| `->withHttpClient(ClientInterface $client)`             | Set just the PSR-18 HTTP client.                                                                                |
+| `->withRequestFactory(RequestFactoryInterface $f)`      | Set just the PSR-17 request factory.                                                                            |
+| `->withStreamFactory(StreamFactoryInterface $f)`        | Set just the PSR-17 stream factory.                                                                             |
+| `->withUriFactory(UriFactoryInterface $f)`              | Set just the PSR-17 URI factory.                                                                                |
+| `->withDefaultHeader($name, $value)`                    | Set a default HTTP header with a value.                                                                         |
+| `->withDefaultHeaders($headers)`                        | Set multiple default HTTP headers.                                                                              |
+| `->withBearerToken(string $token)`                      | Use `BearerTokenAuth` as the default strategy.                                                                  |
+| `->withApiKey($key, $header, $location)`                | Use `ApiKeyAuth`. Location: `LOCATION_HEADER` *(default)* or `LOCATION_QUERY`.                                  |
+| `->withBasicAuth($user, $pass)`                         | Use `BasicAuth`.                                                                                                |
+| `->withStaticToken($token, $header, $prefix)`           | Use `StaticTokenAuth`.                                                                                          |
+| `->withHmacSignature($secret, $algo, $header)`          | Use `HmacSignatureAuth`.                                                                                        |
+| `->withOAuth2ClientCredentials(...)`                    | Use `OAuth2ClientCredentialsAuth`. See [Authentication](authentication.md).                                     |
+| `->withAuth(AuthStrategy $auth)`                        | Set any custom `AuthStrategy` as the default.                                                                   |
+| `->withNamedStrategy($key, AuthStrategy $strategy)`     | Register a named strategy for `#[UseAuth]` resolution.                                                          |
+| `->withDecoder(ResponseDecoder $decoder)`               | Set a custom response decoder.                                                                                  |
+| `->build()`                                             | Construct and return the `DefaultSdkClient`. Throws `\LogicException` if required PSR dependencies are missing. |
 
 ### Example with Guzzle
 
@@ -176,9 +178,9 @@ The decoder receives:
 
 When no custom `ResponseDecoder` is set, `DefaultSdkClient` decodes responses as follows:
 
-| Condition | Result |
-|---|---|
-| Empty body | `null` |
-| `$type` is `null`, `'array'`, or `'mixed'` | `json_decode($body, true)` |
-| `$type` is a class name and `$body` decodes to array | `new $type(...$data)` |
-| Otherwise | `json_decode($body, true)` |
+| Condition                                            | Result                     |
+|------------------------------------------------------|----------------------------|
+| Empty body                                           | `null`                     |
+| `$type` is `null`, `'array'`, or `'mixed'`           | `json_decode($body, true)` |
+| `$type` is a class name and `$body` decodes to array | `new $type(...$data)`      |
+| Otherwise                                            | `json_decode($body, true)` |

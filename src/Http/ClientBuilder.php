@@ -29,6 +29,8 @@ final class ClientBuilder
     private ?AuthStrategy             $auth           = null;
     private ?ResponseDecoder          $decoder        = null;
     private AuthResolver              $authResolver;
+    /** @var array<string, string> */
+    private array                     $defaultHeaders = [];
 
     private function __construct(private readonly string $baseUrl)
     {
@@ -191,6 +193,32 @@ final class ClientBuilder
         return $this;
     }
 
+    // --- Default headers ---
+
+    /**
+     * Set multiple default headers sent on every request.
+     * Merges with any previously set headers; later calls win on duplicate names.
+     *
+     * @param array<string, string> $headers
+     */
+    public function withDefaultHeaders(array $headers): self
+    {
+        $this->defaultHeaders = array_merge($this->defaultHeaders, $headers);
+
+        return $this;
+    }
+
+    /**
+     * Set a single default header sent on every request.
+     * Overwrites any previously set header with the same name.
+     */
+    public function withDefaultHeader(string $name, string $value): self
+    {
+        $this->defaultHeaders[$name] = $value;
+
+        return $this;
+    }
+
     // --- Response decoder ---
 
     public function withDecoder(ResponseDecoder $decoder): self
@@ -219,6 +247,7 @@ final class ClientBuilder
             defaultAuth:    $this->auth,
             decoder:        $this->decoder,
             authResolver:   $this->authResolver,
+            defaultHeaders: $this->defaultHeaders,
         );
     }
 }

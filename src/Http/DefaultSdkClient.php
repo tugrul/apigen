@@ -32,6 +32,8 @@ final class DefaultSdkClient implements SdkClient
         private readonly ?AuthStrategy            $defaultAuth = null,
         private readonly ?ResponseDecoder         $decoder = null,
         private readonly AuthResolver             $authResolver = new AuthResolver(),
+        /** @var array<string, string> */
+        private readonly array                    $defaultHeaders = [],
     ) {}
 
     // --- SdkClient ---
@@ -107,6 +109,10 @@ final class DefaultSdkClient implements SdkClient
         }
 
         $request = $this->requestFactory->createRequest($call->getMethod(), $uri);
+
+        foreach ($this->defaultHeaders as $name => $value) {
+            $request = $request->withHeader($name, $value);
+        }
 
         foreach ($call->getHeaders() as $name => $value) {
             $request = $request->withHeader($name, $value);

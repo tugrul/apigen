@@ -27,6 +27,7 @@ final class DefaultSdkClientTest extends ApiGenTestCase
             uriFactory:     $this->psr17,
             baseUrl:        'https://api.example.com',
             defaultAuth:    $auth !== null ? new BearerTokenAuth($auth) : null,
+            defaultHeaders: [ 'X-My-Header' => 'testing123' ]
         );
 
         return [$client, $httpClient];
@@ -96,6 +97,17 @@ final class DefaultSdkClientTest extends ApiGenTestCase
         );
 
         $this->assertRequestHeader($http->capturedRequests[0], 'Accept', 'application/json');
+    }
+
+    public function test_default_headers_set_on_client_build(): void
+    {
+        [$client, $http] = $this->makeClient($this->makeJsonResponse([]));
+
+        $client->execute(
+            CallDescriptor::create()->method('GET')->path('/x'),
+        );
+
+        $this->assertRequestHeader($http->capturedRequests[0], 'X-My-Header', 'testing123');
     }
 
     // ── Body encoding ─────────────────────────────────────────────────────────
